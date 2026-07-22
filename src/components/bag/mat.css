@@ -1,0 +1,132 @@
+/* "In the bag" — a green self-healing cutting mat with objects pinned on it. */
+
+.mat-wrap {
+  position: relative;
+}
+
+.mat {
+  --mat-cream: rgb(242 227 207);
+  position: relative;
+  aspect-ratio: 16 / 9;
+  min-height: 300px;
+  background: #2f5d46;
+  border-radius: 14px;
+  padding: 1.4rem 1.2rem 1.2rem 2.4rem;
+  rotate: 0.6deg;
+  box-shadow:
+    inset 0 0 0 1px rgb(242 227 207 / 0.25),
+    0 14px 30px -16px oklch(0% 0 0 / 0.5);
+}
+
+:root[data-theme='dark'] .mat {
+  background: #26493a;
+}
+
+/* Ruler numbers down the left edge */
+.mat-ruler {
+  position: absolute;
+  top: 1.4rem;
+  bottom: 1.2rem;
+  left: 0.55rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: rgb(242 227 207 / 0.65);
+  pointer-events: none;
+}
+
+/* The inner working area: grid + border, like a real mat */
+.mat-board {
+  position: absolute;
+  inset: 1.4rem 1.2rem 1.2rem 2.4rem;
+  border: 1px solid rgb(242 227 207 / 0.5);
+  border-radius: 6px;
+  background-image:
+    linear-gradient(rgb(242 227 207 / 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(242 227 207 / 0.12) 1px, transparent 1px),
+    repeating-linear-gradient(45deg, rgb(242 227 207 / 0.05) 0 1px, transparent 1px 34px);
+  background-size:
+    48px 48px,
+    48px 48px,
+    auto;
+  pointer-events: none;
+}
+
+/* Objects on the mat */
+.mat-item {
+  position: absolute;
+  z-index: 2;
+  transition: scale var(--duration-normal) var(--ease-bounce);
+}
+
+.mat-item img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 0.35));
+  pointer-events: none;
+}
+
+.mat-item:hover,
+.mat-item:focus-visible {
+  scale: 1.07;
+  z-index: 3;
+}
+
+.mat-item:focus-visible {
+  outline: 2px solid var(--mat-cream);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+/* Handwritten caption, bottom-right */
+.mat-caption {
+  position: absolute;
+  right: 1.8rem;
+  bottom: 1.6rem;
+  font-family: 'Gochi Hand', cursive;
+  font-size: 1.15rem;
+  color: var(--mat-cream);
+  rotate: -1deg;
+  pointer-events: none;
+}
+
+/* The note that follows the cursor */
+.mat-tip {
+  position: absolute;
+  z-index: 10;
+  translate: -50% calc(-100% - 16px);
+  background: rgb(247 242 232);
+  color: oklch(24% 0.02 90);
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  max-width: 240px;
+  box-shadow: 0 10px 24px -10px oklch(0% 0 0 / 0.45);
+  pointer-events: none;
+  line-height: 1.35;
+}
+
+.mat-tip strong {
+  display: block;
+  font-size: var(--text-small);
+  font-weight: 600;
+}
+
+.mat-tip span {
+  display: block;
+  font-size: var(--text-micro);
+  font-family: var(--font-mono);
+  opacity: 0.75;
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 620px) {
+  .mat {
+    aspect-ratio: 4 / 5;
+    padding-left: 1.9rem;
+  }
+  .mat-board {
+    inset: 1.4rem 0.9rem 1rem 1.9rem;
+  }
+}

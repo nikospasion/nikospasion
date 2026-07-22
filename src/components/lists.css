@@ -1,0 +1,84 @@
+/* Row lists: writing + bag */
+
+.row-list {
+  list-style: none;
+  padding: 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-block: 0.7rem;
+  border-top: 1px solid var(--hairline);
+  font-size: var(--text-base);
+}
+
+.row-title {
+  font-weight: 500;
+  color: var(--ink-dim);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: color var(--duration-fast) ease;
+}
+
+a.row:hover .row-title,
+a.row:focus-visible .row-title {
+  color: var(--ink);
+}
+
+.row-date {
+  color: var(--ink-faint);
+  flex: none;
+}
+
+/* Writing rows */
+.writing-row {
+  gap: 1rem;
+}
+
+.writing-row:last-child {
+  border-bottom: 1px solid var(--hairline);
+}
+
+.row-thumb {
+  width: 54px;
+  height: 40px;
+  flex: none;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+}
+
+.writing-row .row-title {
+  flex: 0 1 auto;
+}
+
+/* Bag */
+.bag-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
+.bag-label {
+  color: var(--label);
+  margin-bottom: 0.1rem;
+}
+
+.bag-row {
+  border-top: 1px solid var(--hairline);
+}
+
+.bag-row .row-title {
+  flex: 0 0 auto;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.bag-note {
+  flex: none;
+  text-align: right;
+  font-size: var(--text-small);
+}

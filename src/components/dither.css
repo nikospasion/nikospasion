@@ -1,0 +1,71 @@
+/* DitherImage — pre-dithered bitmap idle, crisp image revealed on hover.
+   No runtime shaders: the dither is baked at build time. */
+
+.dither {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  background: var(--pill);
+}
+
+.dither-shader {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Baked at 1px per dither cell — upscale with hard pixels. */
+.dither-static {
+  image-rendering: pixelated;
+}
+
+/* Theme variants: exactly mirrors the token logic in tokens.css. */
+.dither-static-dark {
+  display: none;
+}
+
+:root[data-theme='dark'] .dither-static-dark {
+  display: block;
+}
+
+:root[data-theme='dark'] .dither-static-light {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) .dither-static-dark {
+    display: block;
+  }
+  :root:not([data-theme='light']):not([data-theme='dark']) .dither-static-light {
+    display: none;
+  }
+}
+
+.dither-crisp {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity var(--duration-normal) ease;
+}
+
+.reveal:hover .dither-crisp,
+.reveal:focus-visible .dither-crisp,
+.dither:hover .dither-crisp {
+  opacity: 1;
+}
+
+/* Dither asset missing (real image not yet regenerated) → show crisp. */
+.dither-missing .dither-crisp {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dither-crisp {
+    opacity: 1;
+  }
+}

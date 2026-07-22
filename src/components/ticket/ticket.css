@@ -1,0 +1,204 @@
+/* Descent ticket banner — a fixed, physical artifact (dark ticket stock +
+   cream ink) that ignores site theme, like the cutting-mat board. Sits in a
+   quiet unlabeled framed panel between two full-bleed rules. */
+
+.ticket-banner {
+  position: relative;
+  margin: 1.25rem 0;
+  /* padding-block: 2.75rem; */
+}
+
+/* Bleeds full-bleed to the interior guides, no border of its own — same
+   technique as .hero-sig (negative margin by --content-inset). */
+.ticket-frame {
+  position: relative;
+  /* height: clamp(220px, 34vh, 340px); */
+  margin-inline: calc(-1 * var(--content-inset));
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(96px, 24%) 1fr 3px minmax(30px, 44px);
+  width: 100%;
+  min-height: clamp(220px, 30vh, 300px);
+  background: #131c4a; /* matches the vortex colorBack (reduced-motion fallback) */
+  color: #f2e3cf;
+}
+
+/* The living background: the dither vortex fills the whole ticket. */
+.ticket-vortex {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.ticket-vortex canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
+/* Legibility scrim: lets the vortex rage on the left, calms under the text. */
+.ticket-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 26%,
+    rgb(35 35 35 / 0.72) 48%,
+    rgb(35 35 35 / 0.9) 70%
+  );
+}
+
+/* Content sits above the vortex + scrim. */
+.ticket-art,
+.ticket-body,
+.ticket-perf,
+.ticket-stub {
+  position: relative;
+  z-index: 1;
+}
+
+.ticket-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.7rem;
+  padding: 1.1rem 0.9rem 1rem 1.1rem;
+  min-width: 0;
+}
+
+.ticket-copy {
+  display: block;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(0.85rem, 0.72rem + 0.45vw, 1rem);
+  line-height: 1.45;
+  max-width: 44ch;
+  color: rgb(242 227 207 / 0.9);
+}
+
+.ticket-mid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.ticket-admit {
+  font-size: 1.2rem;
+  letter-spacing: 0.14em;
+  color: #ff8a63; /* lifted vermilion — legible on the deep indigo */
+}
+
+.ticket-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: rgb(242 227 207 / 0.72);
+}
+
+.ticket-foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 0.9rem;
+}
+
+.ticket-foot-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.ticket-seat {
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  color: rgb(242 227 207 / 0.55);
+}
+
+/* The pixel wordmark — the ticket stamp. Cream, like ink on dark stock. */
+.ticket-wordmark {
+  width: min(300px, 100%);
+  height: auto;
+  color: #f2e3cf;
+}
+
+.ticket-year {
+  flex: none;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: rgb(242 227 207 / 0.8);
+}
+
+/* Perforation: dashed tear line with two punched notches. */
+.ticket-perf {
+  position: relative;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgb(242 227 207 / 0.4) 0 6px,
+    transparent 6px 12px
+  );
+}
+
+.ticket-notch {
+  position: absolute;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--panel);
+  transform: translate(-50%, -50%);
+}
+
+.ticket-notch-top {
+  top: 0;
+}
+
+.ticket-notch-bottom {
+  top: 100%;
+}
+
+.ticket-stub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding-block: 0.9rem;
+}
+
+.ticket-stub-serial,
+.ticket-stub-seat,
+.ticket-stub-year {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  color: rgb(242 227 207 / 0.7);
+}
+
+.ticket-stub-barcode {
+  width: 18px;
+  height: 46px;
+  background-image: repeating-linear-gradient(
+    to right,
+    #f2e3cf 0 1px,
+    transparent 1px 2.4px,
+    #f2e3cf 2.4px 3px,
+    transparent 3px 5px
+  );
+  opacity: 0.85;
+}
+
+@media (max-width: 480px) {
+  .ticket {
+    grid-template-columns: 56px 1fr 3px 26px;
+  }
+  .ticket-copy {
+    display: none;
+  }
+}

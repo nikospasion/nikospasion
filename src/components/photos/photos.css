@@ -1,0 +1,25 @@
+.photo-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+@media (max-width: 560px) {
+  .photo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.photo-img {
+  display: block;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--hairline);
+}
+
+.photo-caption {
+  margin-top: 0.35rem;
+}

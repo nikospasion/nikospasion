@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 170" width="240" height="170">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0" stop-color="#cdae8a"/>
+      <stop offset="1" stop-color="#6a5c4a"/>
+    </linearGradient>
+  </defs>
+  <rect x="6" y="6" width="228" height="158" rx="14" fill="url(#g)" stroke="#ffffff" stroke-width="5"/>
+  <text x="120" y="90" fill="#fff" font-family="system-ui, sans-serif" font-size="20" font-weight="600" text-anchor="middle" opacity="0.9">Pocket tripod</text>
+</svg>

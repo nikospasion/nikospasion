@@ -1,0 +1,198 @@
+.intro {
+  margin-top: 1.2rem;
+}
+
+.intro-eyebrow {
+  color: var(--label);
+  margin-bottom: 1.2rem;
+}
+
+.intro-statement {
+  font-size: var(--text-statement);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  max-width: 34ch;
+}
+
+.intro-statement + .intro-statement {
+  margin-top: 1.2rem;
+}
+
+.intro-links {
+  margin-top: 1.6rem;
+  color: var(--ink-dim);
+  max-width: 44ch;
+}
+
+/* ── Inline chips ({img:name} tokens) ── */
+
+.intro-chip-wrap {
+  display: inline-flex;
+  vertical-align: -0.16em;
+}
+
+.intro-chip {
+  width: 1.1em;
+  height: 1.1em;
+  border-radius: 24%;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+}
+
+/* Chip hover: the icon springs up with two color cards fanning out behind
+   it and a dark label pill popping above (Eido-style). Pure CSS. */
+
+.chip-hover {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+}
+
+.chip-hover:hover {
+  z-index: 20;
+}
+
+.chip-stack {
+  position: relative;
+  display: inline-block;
+  transition: scale 0.28s var(--ease-bounce);
+  transform-origin: 50% 80%;
+}
+
+.chip-hover:hover .chip-stack {
+  scale: 1.6;
+}
+
+.chip-stack::before,
+.chip-stack::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 0.16em 0;
+  border-radius: 24%;
+  opacity: 0;
+  z-index: -1;
+  transition:
+    opacity 0.24s ease,
+    rotate 0.28s var(--ease-bounce),
+    translate 0.28s var(--ease-bounce);
+}
+
+.chip-stack::before {
+  background: var(--accent);
+}
+
+.chip-stack::after {
+  background: var(--accent-2);
+}
+
+.chip-hover:hover .chip-stack::before {
+  opacity: 1;
+  rotate: -9deg;
+  translate: -9% 3%;
+}
+
+.chip-hover:hover .chip-stack::after {
+  opacity: 1;
+  rotate: 8deg;
+  translate: 9% 3%;
+}
+
+.chip-tip {
+  position: absolute;
+  bottom: calc(100% + 0.9em);
+  left: 50%;
+  translate: -50% 6px;
+  scale: 0.7;
+  opacity: 0;
+  padding: 0.28em 0.75em;
+  border-radius: 999px;
+  background: #141414;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.25);
+  transition:
+    opacity 0.22s var(--ease-bounce),
+    translate 0.22s var(--ease-bounce),
+    scale 0.22s var(--ease-bounce);
+}
+
+.chip-hover:hover .chip-tip {
+  opacity: 1;
+  translate: -50% 0;
+  scale: 1;
+}
+
+/* The scribble gif: black ink on white — blend it into the paper, invert on
+   dark themes (mirrors the token-theming pattern in tokens.css). */
+.intro-scribble {
+  height: 1.05em;
+  width: auto;
+  vertical-align: -0.1em;
+  mix-blend-mode: darken;
+}
+
+:root[data-theme='dark'] .intro-scribble {
+  filter: invert(1);
+  mix-blend-mode: lighten;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) .intro-scribble {
+    filter: invert(1);
+    mix-blend-mode: lighten;
+  }
+}
+
+/* ── Inline links ([text](url)) — underline + trailing arrow ── */
+
+.intro-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3.5px;
+  text-decoration-color: var(--hairline-strong);
+  white-space: nowrap;
+  transition:
+    color var(--duration-fast) ease,
+    text-decoration-color var(--duration-fast) ease;
+}
+
+.intro-link:hover,
+.intro-link:focus-visible {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+.intro-link-arrow {
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  vertical-align: 0.02em;
+  margin-left: 0.08em;
+}
+
+/* ── "two friends" flying-cursor field (~text~) ── */
+
+.cursor-word {
+  position: relative;
+  display: inline-block;
+}
+
+.cursor-word-field {
+  position: absolute;
+  inset: -2.4em -3.2em;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.cursor-word-field[data-active='true'] {
+  opacity: 1;
+}

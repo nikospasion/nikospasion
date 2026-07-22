@@ -1,0 +1,29 @@
+/* BadgeTrailCard — full-page overlay (About page only). Fixed to the
+   viewport so badges can drop anywhere on screen, including over the
+   sidebar; pointer-events stay off throughout so nothing underneath is
+   ever blocked. Sits above normal content/sidebar but below sheets and the
+   mobile drawer, in case those ever open while it's mounted. */
+
+.badge-trail-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.badge-trail-chip {
+  position: absolute;
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1;
+  padding: 1px 4px;
+  border-radius: 3px;
+  color: #000;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px -1px rgb(20 20 30 / 0.35);
+  will-change: opacity, transform;
+  transform-origin: center;
+}

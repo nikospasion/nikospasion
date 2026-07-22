@@ -1,0 +1,787 @@
+/* ============================ Backdrop ============================ */
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.backdrop-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
+  background-size: var(--dot-size) var(--dot-size);
+}
+
+
+/* ============================ Shell ============================ */
+
+.page-frame {
+  position: relative;
+  z-index: 1;
+  overflow-x: clip;
+}
+
+/* The main panel: spans from the sidebar to the shell's right edge; the
+   content column sits inset INSIDE it, framed by interior
+   guides. The "frost" is faked with an opaque bg + faint inner dots — a real
+   backdrop-filter over a viewport-sized panel is a per-frame GPU tax. */
+.content-col {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--panel);
+  background-image: radial-gradient(var(--dot-inner) 1px, transparent 1.5px);
+  background-size: var(--dot-size) var(--dot-size);
+  border-inline: 1px solid var(--guide);
+  /* padding: clamp(2rem, 5vh, 3.25rem) 0 2.5rem; */
+}
+
+/* The content column, centered within the panel; its borders are the
+   interior vertical guides marking the content boundary. */
+.content-inner {
+  position: relative;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  border-inline: 1px solid var(--guide);
+  /* Shared with .hero-sig below (bleeds out by exactly this amount), so the
+     canvas can span edge-to-edge while everything else stays inset. */
+  --content-inset: clamp(1rem, 1vw, 1.75rem);
+}
+
+/* Breathing room between the interior guides and the content itself. */
+.content-inner main,
+.content-inner .site-footer {
+  display: block;
+  padding-inline: var(--content-inset);
+}
+
+/* Grain: warm-toned noise (sepia-shifted, not gray) so it adds tooth
+   without desaturating the cream. Knobs: `opacity` here = grain strength;
+   the feColorMatrix values tint the noise itself. */
+.content-col::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.42 0.3 0.18 0 0.12 0.36 0.3 0.15 0 0.1 0.27 0.22 0.13 0 0.07 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 150px 150px;
+  opacity: 0.03;
+}
+
+.content-col > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Inside the canvas, sections fill the padded width. */
+.content-col .col {
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: 0;
+}
+
+.page-frame-frozen {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  transform-origin: 50% 0;
+  will-change: transform;
+  background: var(--paper);
+}
+
+.content {
+  max-width: var(--shell-max);
+  margin-inline: auto;
+  padding-left: calc(var(--sidebar-w) + var(--sidebar-gap));
+}
+
+/* ============================ Sidebar ============================ */
+
+.sidebar {
+  position: fixed;
+  inset-block: 0;
+  width: var(--sidebar-w);
+  left: max(var(--page-px), calc((100vw - var(--shell-max)) / 2));
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: clamp(2.5rem, 6vh, 4.5rem) 0.85rem 1.4rem;
+  border-inline: 1px solid var(--guide);
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+/* Opaque backdrop that repaints the dot grid in perfect phase (both the
+   sidebar and the dots layer are viewport-fixed), plus the diagonal hatch.
+   Being opaque, it occludes the full-bleed section rules behind it. */
+.sidebar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--paper);
+  background-image:
+    repeating-linear-gradient(45deg, var(--hatch) 0 1px, transparent 1px 9px),
+    radial-gradient(var(--dot) 1px, transparent 1.5px);
+  background-size:
+    auto,
+    var(--dot-size) var(--dot-size);
+  background-attachment: scroll, fixed;
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Short viewports: tighten so 04_SETTINGS stays reachable and visible.
+   (Selectors carry .sidebar for specificity — base rules come later in file.) */
+@media (max-height: 780px) {
+  aside.sidebar {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    gap: 0.75rem;
+  }
+  .sidebar .rail-block-fill {
+    margin-top: 0;
+    gap: 0.4rem;
+  }
+  .sidebar .rail-frame {
+    padding-block: 0.5rem;
+  }
+  .sidebar .rail-logo-img {
+    max-width: 5.5rem;
+  }
+  .sidebar .rail-item {
+    padding-block: 0.38rem;
+  }
+  .sidebar .rail-social-link {
+    height: 36px;
+  }
+}
+
+.rail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.rail-block-fill {
+  margin-top: auto;
+  gap: 0.55rem;
+}
+
+/* Labels sit flush at the sidebar's left edge — no padding. */
+.rail-label {
+  color: var(--label);
+  letter-spacing: 0.08em;
+  margin-inline: -0.85rem;
+  padding-left: 2px;
+}
+
+/* Logo framed by full-width hairlines with + marks at the line ends. */
+.rail-frame {
+  position: relative;
+  margin-inline: -0.85rem;
+  border-block: 1px solid var(--hairline);
+  padding: 0.9rem 0.85rem;
+  display: grid;
+  place-items: center;
+}
+
+/* + marks darken when the logo frame is hovered. */
+.rail-frame:hover .plate-corner {
+  opacity: 1;
+  color: var(--ink);
+}
+
+.rail-logo {
+  display: block;
+}
+
+.rail-logo-img {
+  width: 100%;
+  max-width: 7.5rem;
+  height: auto;
+}
+
+/* Rows bleed to the sidebar's edges; separators are horizontal lines only.
+   The active item is a solid square white card spanning the full width. */
+.rail-nav {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  margin-inline: -0.85rem;
+  border-block: 1px solid var(--hairline);
+}
+
+.rail-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.62rem 0.85rem 0.62rem 1rem;
+  color: var(--ink-dim);
+  font-size: var(--text-small);
+  transition:
+    background var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+}
+
+.rail-nav li + li .rail-item {
+  border-top: 1px solid var(--hairline);
+}
+
+.rail-item-icon {
+  color: var(--ink-faint);
+  flex: none;
+}
+
+.rail-item:hover {
+  background: color-mix(in oklab, var(--panel) 55%, transparent);
+  color: var(--ink);
+}
+
+.rail-item[aria-current] {
+  background: var(--panel);
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.rail-item[aria-current] .rail-item-icon {
+  color: var(--accent);
+}
+
+/* Social icons as bordered cells spanning the full sidebar width. */
+.rail-social {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-inline: -0.85rem;
+  border-block: 1px solid var(--hairline);
+}
+
+.rail-social-link {
+  display: grid;
+  place-items: center;
+  height: 44px;
+  color: var(--ink-dim);
+  border-right: 1px solid var(--hairline);
+  transition:
+    background var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+}
+
+.rail-social-link:last-child {
+  border-right: 0;
+}
+
+.rail-social-link:hover {
+  background: color-mix(in oklab, var(--panel) 55%, transparent);
+  color: var(--ink);
+}
+
+.rail-meta {
+  color: var(--ink-faint);
+}
+
+.rail-clock {
+  color: var(--ink-dim);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Theme control */
+.theme-control {
+  display: inline-flex;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--panel);
+  width: fit-content;
+}
+
+.theme-opt {
+  font-family: var(--font-mono);
+  font-size: var(--text-micro);
+  padding: 0.28rem 0.42rem;
+  color: var(--ink-dim);
+  border-right: 1px solid var(--hairline);
+  transition:
+    background var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+}
+
+.theme-opt:last-child {
+  border-right: 0;
+}
+
+.theme-opt[aria-pressed='true'] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+@media (max-width: 1024px) {
+  .sidebar {
+    display: none;
+  }
+  .content {
+    padding-left: 0;
+    padding-top: 3.25rem;
+  }
+  .content-col {
+    border-right: 0;
+  }
+  .content-inner {
+    border-inline: 0;
+    padding-inline: var(--page-px);
+  }
+}
+
+/* ============================ Mobile bar + drawer ============================ */
+
+.mobilebar {
+  display: none;
+}
+
+@media (max-width: 1024px) {
+  .mobilebar {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    z-index: 40;
+    height: 3.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-inline: var(--page-px);
+    background: color-mix(in oklab, var(--paper) 82%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+  }
+}
+
+.mobilebar-logo {
+  display: inline-flex;
+  align-items: center;
+}
+
+.mobilebar-logo img {
+  height: 1.5rem;
+  width: auto;
+}
+
+.mobilebar-toggle {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-right: -0.4rem;
+  color: var(--ink);
+}
+
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: oklch(0% 0 0 / 0.35);
+  backdrop-filter: blur(2px);
+}
+
+.drawer {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 46;
+  max-height: 90svh;
+  overflow-y: auto;
+  padding: 0.6rem var(--page-px) calc(1.5rem + env(safe-area-inset-bottom));
+  background: var(--panel);
+  border-top: 1px solid var(--hairline);
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  box-shadow: 0 -18px 50px -18px oklch(0% 0 0 / 0.4);
+}
+
+.drawer .rail-label {
+  margin-top: 1.4rem;
+  margin-bottom: 0.5rem;
+}
+
+.drawer-handle {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+.drawer-handle span {
+  display: block;
+  width: 40px;
+  height: 5px;
+  margin: 0 auto;
+  border-radius: 999px;
+  background: var(--hairline-strong);
+}
+
+.drawer-tagline {
+  font-size: 1.25rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.drawer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+@media (max-width: 420px) {
+  .drawer-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.drawer-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.85rem 0.4rem;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--panel);
+  color: var(--ink);
+  font-size: var(--text-micro);
+  text-align: center;
+}
+
+.drawer-tile:active {
+  background: var(--pill);
+}
+
+.drawer-social {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.drawer-social-link {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  color: var(--ink);
+}
+
+.drawer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.drawer-clock {
+  text-align: right;
+}
+
+.drawer-close {
+  position: absolute;
+  top: 0.9rem;
+  right: var(--page-px);
+  color: var(--ink-dim);
+}
+
+/* Crosshair "+" marks just inside block corners; darken on hover. */
+.plate {
+  position: relative;
+}
+
+.plate-corner {
+  position: absolute;
+  color: var(--ink-faint);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+  opacity: 0.55;
+  pointer-events: none;
+  transition:
+    opacity var(--duration-fast) ease,
+    color var(--duration-fast) ease;
+}
+
+.plate:hover .plate-corner {
+  opacity: 1;
+  color: var(--ink);
+}
+
+.pc-tl {
+  top: 4px;
+  left: 6px;
+}
+.pc-tr {
+  top: 4px;
+  right: 6px;
+}
+.pc-bl {
+  bottom: 4px;
+  left: 6px;
+}
+.pc-br {
+  bottom: 4px;
+  right: 6px;
+}
+
+/* ============================ Section header ============================ */
+
+.section {
+  scroll-margin-top: 2rem;
+}
+
+.section-head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: var(--gap-section) 0 1.6rem;
+  padding-block: 0.4rem;
+}
+
+/* Home's writing preview sits right under the ticket banner — no extra gap
+   above it (descendant selector, targets the .section-head INSIDE #writing,
+   not the #writing element itself — that's what "#writing.section" missed). */
+#writing .section-head {
+  margin-top: 0;
+}
+
+/* Full-bleed rules framing the heading, edge to edge across the page. */
+.section-hr {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 300vw;
+  height: 1px;
+  background: var(--guide);
+  z-index: 0;
+}
+
+.section-hr-top {
+  top: 0;
+}
+
+.section-hr-bottom {
+  bottom: 0;
+}
+
+/* Number in a bordered cell with the hatched cell fused to its right edge,
+   like a technical drawing's title block. */
+.section-num {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding-inline: 0.5rem;
+  border: 1px solid var(--hairline-strong);
+  color: var(--ink-dim);
+  font-weight: 500;
+  font-size: 0.9rem;
+  /* cancel the flex gap + overlap borders so the two cells share an edge */
+  margin-right: calc(-0.7rem - 1px);
+}
+
+.section-mark {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  border: 1px solid var(--hairline-strong);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--ink-dim) 55%, transparent) 0 1px,
+    transparent 1px 4px
+  );
+}
+
+.section-title {
+  color: var(--ink);
+  letter-spacing: 0.14em;
+  font-size: 0.76rem;
+}
+
+.section-meta {
+  color: var(--ink-dim);
+  flex: none;
+  margin-left: auto;
+}
+
+/* ============================ Hero ============================ */
+
+/* The hero band bleeds full-bleed edge to edge (touching the interior
+   guides directly), breaking out of main's padding — no gap on either side,
+   unlike the rest of the content which stays inset. */
+.hero-sig {
+  position: relative;
+  height: clamp(150px, 24vh, 240px);
+  margin-inline: calc(-1 * var(--content-inset));
+  overflow: hidden;
+  background: var(--panel);
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-canvas-inner {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.hero-eyebrow {
+  color: var(--label);
+  margin-top: 1.6rem;
+}
+
+.hero-name {
+  font-size: var(--text-hero);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 0.35rem;
+}
+
+.hero-tagline {
+  color: var(--ink-dim);
+  font-size: clamp(1.05rem, 0.92rem + 0.6vw, 1.3rem);
+  margin-top: 0.3rem;
+  max-width: 30ch;
+}
+
+/* The static lead-in reads as serif italic; the cycling word stays sans. */
+.hero-tagline-lead {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.12em;
+}
+
+/* The clickable word inside the tagline (see ui/TaglineCycler.tsx +
+   ui/typer.css). Adds the padding/line-height typer.css leaves to us. */
+.tagline-word {
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--accent);
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-fast) ease;
+}
+
+.tagline-word:hover {
+  color: var(--accent-2);
+}
+
+.tagline-word:focus-visible {
+  outline-offset: 2px;
+}
+
+.tagline-word .word .char {
+  padding: 0 0.06em;
+}
+
+.tagline-word .word .char.charBorder::after {
+  inset: -1px -0.06em;
+}
+
+/* ============================ Footer ============================ */
+
+.site-footer {
+  margin-top: var(--gap-section);
+  padding-block: 2.5rem 1.5rem;
+  font-size: var(--text-small);
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+}
+
+.footer-id {
+  display: flex;
+  flex-direction: column;
+  gap: 2.75rem;
+}
+
+.footer-copyright {
+  color: var(--ink-dim);
+}
+
+.footer-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.footer-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--ink-dim);
+  line-height: 1.45;
+}
+
+.footer-meta-icon {
+  color: var(--ink-faint);
+  flex: none;
+}
+
+.footer-label {
+  color: var(--label);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.8rem;
+}
+
+/* Tree-branch lists: a vertical spine with a tick before each item. */
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin-left: 0.35rem;
+  border-left: 1px solid var(--hairline-strong);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.footer-list li {
+  position: relative;
+  padding-left: 1.1rem;
+  color: var(--ink-dim);
+}
+
+.footer-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0.65rem;
+  height: 1px;
+  background: var(--hairline-strong);
+}
+
+.footer-list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.footer-arrow {
+  width: 13px;
+  height: 13px;
+  color: var(--ink-faint);
+}

@@ -1,0 +1,126 @@
+/* ---------------------------------------------------------------------------
+   Tokens — warm blueprint: cream paper, sand margins, indigo + vermilion.
+   Light + dark.
+--------------------------------------------------------------------------- */
+
+:root {
+  /* Surfaces & ink */
+  --paper: #f6f4f2; /* the dotted ground / margins */
+  --panel: #f8f8f8; /* content surfaces (lightest)  */
+  --ink: #232323;
+  --ink-dim: #4d4b46;
+  --ink-faint: #8b857a;
+  --label: rgb(22 23 24 / 0.42);
+
+  /* Lines & blueprint */
+  --hairline: rgb(22 23 24 / 0.1);
+  --hairline-strong: rgb(22 23 24 / 0.42);
+  --dot: rgb(124 146 177 / 0.2); /* blueprint-blue dots on sand   */
+  --dot-inner: rgb(48 86 144 / 0.07);
+  --hatch: rgb(22 23 24 / 0.05);
+  --guide: rgb(22 23 24 / 0.1); /* dusty-blue rails              */
+
+  /* Accents */
+  --accent: #d44b2c; /* vermilion — interactive       */
+  --accent-2: #223488; /* indigo — structural           */
+  --accent-soft: rgb(212 75 44 / 0.14);
+  --grad: linear-gradient(90deg, #d44b2c, #223488);
+
+
+  /* Fills */
+  --pill: #dbdee3;
+  --pill-hover: #d2d5db;
+
+  /* Dither palette (baked bitmaps read these values via the generator) */
+  --dither-back: 243, 238, 231;
+  --dither-front: 35, 35, 35;
+
+  /* Type */
+  --font-sans: 'Instrument Sans Variable', 'Instrument Sans', system-ui, sans-serif;
+  --font-mono: 'Fragment Mono', 'SFMono-Regular', Menlo, monospace;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+
+  --text-hero: clamp(1.9rem, 1.3rem + 2.6vw, 2.9rem);
+  --text-statement: clamp(1.25rem, 1.02rem + 1.1vw, 1.55rem);
+  --text-base: 0.9375rem;
+  --text-small: 0.8125rem;
+  --text-micro: 0.71rem;
+
+  /* Layout */
+  --sidebar-w: 11rem;
+  --sidebar-gap: 1.5rem;
+  --content-max: 39rem;
+  --rail-gap: 2.25rem;
+  --canvas-pad: clamp(1.5rem, 3vw, 2.75rem);
+  --shell-max: calc(
+    var(--sidebar-w) + var(--sidebar-gap) + 2 * var(--rail-gap) + var(--content-max)
+  );
+  --page-px: clamp(1.1rem, 4vw, 1.75rem);
+  --frame: 10px;
+  --gap-section: clamp(3.5rem, 2.5rem + 3vw, 5.5rem);
+  --dot-size: 32px;
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-sheet: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.5, 0.64, 1);
+
+  /* Radius */
+  --radius-sm: 5px;
+  --radius: 10px;
+  --radius-sheet: 18px;
+}
+
+:root[data-theme='dark'] {
+  --paper: #101112;
+  --panel: #161718;
+  --ink: #f4ede7;
+  --ink-dim: #b3aca0;
+  --ink-faint: #6f6a61;
+  --label: rgb(244 237 231 / 0.4);
+
+  --hairline: rgb(244 237 231 / 0.1);
+  --hairline-strong: rgb(244 237 231 / 0.2);
+  --dot: rgb(124 146 177 / 0.18);
+  --dot-inner: rgb(124 146 177 / 0.06);
+  --hatch: rgb(244 237 231 / 0.05);
+  --guide: rgb(124 146 177 / 0.3);
+
+  --accent: #e05a38;
+  --accent-2: #7c92b1;
+  --accent-soft: rgb(224 90 56 / 0.18);
+  --grad: linear-gradient(90deg, #e05a38, #7c92b1);
+
+  --pill: #202224;
+  --pill-hover: #282a2d;
+
+  --dither-back: 22, 23, 24;
+  --dither-front: 234, 225, 210;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --paper: #101112;
+    --panel: #161718;
+    --ink: #f4ede7;
+    --ink-dim: #b3aca0;
+    --ink-faint: #6f6a61;
+    --label: rgb(244 237 231 / 0.4);
+    --hairline: rgb(244 237 231 / 0.1);
+    --hairline-strong: rgb(244 237 231 / 0.2);
+    --dot: rgb(124 146 177 / 0.18);
+    --dot-inner: rgb(124 146 177 / 0.06);
+    --hatch: rgb(244 237 231 / 0.05);
+    --guide: rgb(124 146 177 / 0.3);
+    --accent: #e05a38;
+    --accent-2: #7c92b1;
+    --accent-soft: rgb(224 90 56 / 0.18);
+    --grad: linear-gradient(90deg, #e05a38, #7c92b1);
+    --pill: #202224;
+    --pill-hover: #282a2d;
+    --dither-back: 22, 23, 24;
+    --dither-front: 234, 225, 210;
+  }
+}
