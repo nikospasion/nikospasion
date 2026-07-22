@@ -24,7 +24,7 @@ export const TAGLINE_WORDS = ['fun', 'clean', 'natural', 'thoughtful', 'easy', '
 export const INTRO: string[] = [
   'Creating is something that is innate to me.',
   'I care deeply about {img:scribble} *craft and quality* and I like to make people feel something through my work.',
-  "I'm a co-founder and CTO at {img:descent}[Descent](https://descent.dev), an AI consultancy and engineering hub I started with ~two friends~. We build agentic systems for companies, and co-found new ones of our own.",
+  "I'm a co-founder at {img:descent}[Descent](https://descent.dev), an AI consultancy and engineering hub I'm building with ~two friends~. We build agentic systems for companies, and co-found new ones of our own.",
   'Before this, I spent the last few years building products in {img:gotyme} *FinTech*, mostly steering AI products, engineering, leadership, and direction.',
 ]
 
