@@ -9,6 +9,7 @@ import {
 import type { MotionValue } from 'motion/react'
 import { CONTACT, INTRO, INTRO_IMAGES, PROFILE } from '../../lib/content'
 import { IconArrow } from '../ui/Icons'
+import { PageLink } from '../ui/PageLink'
 import { FlyingCursors } from '../../lib/flyingCursors'
 
 const REVEAL_SPREAD = 4
@@ -71,8 +72,12 @@ function parseIntro(paragraph: string): Unit[] {
   return units
 }
 
+interface IntroProps {
+  go: (path: string) => void
+}
+
 /** Top block: name + role, then a bio that lights up word-by-word on scroll. */
-export function Intro() {
+export function Intro({ go }: IntroProps) {
   const bodyRef = useRef<HTMLDivElement>(null)
   const reduced = useReducedMotion()
 
@@ -96,10 +101,10 @@ export function Intro() {
       </div>
 
       <p className="intro-links">
-        get to know more <a className="pill-link" href="#about">about me</a>,
-        read my <a className="pill-link" href="#writing">writings</a>, browse my{' '}
-        <a className="pill-link" href="#projects">projects</a>, see what i've consumed on{' '}
-        <a className="pill-link" href="#music">my library</a>, or say hi at{' '}
+        get to know more <PageLink className="pill-link" to="/about" go={go}>about me</PageLink>,
+        read my <PageLink className="pill-link" to="/writing" go={go}>writings</PageLink>, browse my{' '}
+        <PageLink className="pill-link" to="/projects" go={go}>projects</PageLink>, see what i've consumed on{' '}
+        <PageLink className="pill-link" to="/library" go={go}>my library</PageLink>, or say hi at{' '}
         <a className="pill-link" href={`mailto:${CONTACT.email}`}>nikos@descent.dev</a>.
       </p>
     </section>

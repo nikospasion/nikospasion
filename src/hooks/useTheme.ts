@@ -12,13 +12,13 @@ function apply(theme: Theme) {
 
 function read(): Theme {
   const stored = localStorage.getItem(KEY)
-  return stored === 'light' || stored === 'dark' ? stored : 'system'
+  return stored === 'light' || stored === 'dark' || stored === 'system' ? stored : 'light'
 }
 
-/** Persisted light/dark/system theme, applied via `data-theme` on <html>. */
+/** Persisted light/dark/system theme (defaults to light), applied via `data-theme` on <html>. */
 export function useTheme(): { theme: Theme; setTheme: (t: Theme) => void; cycle: () => void } {
   const [theme, setThemeState] = useState<Theme>(() =>
-    typeof window === 'undefined' ? 'system' : read(),
+    typeof window === 'undefined' ? 'light' : read(),
   )
 
   useEffect(() => {

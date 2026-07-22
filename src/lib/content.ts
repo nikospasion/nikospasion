@@ -48,7 +48,7 @@ export const DESCENT = {
   seat: 'SEAT 01 · STUDIO',
   blurb:
     'Every model learns by descending until the gradient flattens. So do we — take the problem nobody has solved, decompose it into primitives, come back with it converged.',
-  url: '#',
+  url: 'https://descent.dev',
 }
 
 export const ABOUT = {

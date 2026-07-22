@@ -63,7 +63,13 @@ export function DescentTicket() {
     <div className="ticket-banner">
       <div className="ticket-frame plate">
         <Corners />
-        <a className="ticket" href={DESCENT.url} aria-label={`${DESCENT.wordmark} — ${DESCENT.subtitle}`}>
+        <a
+          className="ticket"
+          href={DESCENT.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${DESCENT.wordmark} — ${DESCENT.subtitle}`}
+        >
           <TicketVortex />
           <span className="ticket-scrim" aria-hidden="true" />
 

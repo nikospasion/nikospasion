@@ -18,7 +18,7 @@ export function HomePage({ onOpen, go }: HomePageProps) {
   return (
     <>
       <Hero />
-      <Intro />
+      <Intro go={go} />
       <DescentTicket />
       <WritingList onOpen={onOpen} go={go} />
       <ProjectList onOpen={onOpen} go={go} />
