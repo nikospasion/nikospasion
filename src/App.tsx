@@ -51,7 +51,7 @@ function parseRoute(pathname: string): ParsedRoute {
 }
 
 const PAGE_TITLES: Record<Page, string> = {
-  home: 'Nikos Pasion — design engineer',
+  home: 'Nikos Pasion',
   about: 'About — Nikos Pasion',
   writing: 'Writing — Nikos Pasion',
   projects: 'Projects — Nikos Pasion',
