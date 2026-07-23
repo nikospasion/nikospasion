@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "bunx --bun vite",
-    "build": "bunx --bun tsc --noEmit && bunx --bun vite build",
+    "build": "bunx --bun tsc --noEmit && bun run scripts/gen-sitemap.ts && bunx --bun vite build",
     "preview": "bunx --bun vite preview"
   },
   "dependencies": {
